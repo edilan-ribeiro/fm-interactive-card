@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        /*
+       
         button {
             border-radius: 0;
             text-align: inherit;
@@ -24,6 +24,6 @@ export const GlobalStyle = createGlobalStyle`
             border: none;
             color: inherit;
             font: inherit;
-        } */
+        }
     }
 `
