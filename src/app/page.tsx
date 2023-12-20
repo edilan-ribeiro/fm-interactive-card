@@ -28,5 +28,5 @@ const Main = styled.main`
 
 
     background: url('/images/bg-main-desktop.png') no-repeat;
-    background-size: 36% 100%;
+    background-size: 35% 100%;
 `
