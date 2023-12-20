@@ -1,28 +1,117 @@
-import styled from 'styled-components'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+	ConfirmButton,
+	CvcField,
+	DateContainer,
+	ExpireField,
+	FormSide,
+	InputContainer,
+	InputErrors,
+	InputField,
+	Labels,
+	SecurityFields,
+} from './Form.Styles'
+
+type createCardSchema = z.infer<typeof createCardSchema>
+
+const createCardSchema = z.object({
+	name: z.string().min(1, "Can't be blank").min(5, 'Name too small'),
+
+	cardn: z.coerce
+		.number({ invalid_type_error: 'Wrong format, numbers only' })
+		.min(1, "Can't be blank")
+		.refine(
+			(cardNumber) => cardNumber.toString().length === 16,
+			'Must have 16 digits'
+		),
+	month: z.coerce
+		.number({ invalid_type_error: 'Invalid month' })
+		.min(1, "Can't be blank")
+		.max(12, 'Invalid month'),
+	year: z.coerce
+		.number({ invalid_type_error: 'Invalid year' })
+		.min(1, "Can't be blank")
+		.min(23, "Year can't be in the past")
+		.max(80, 'Invalid year'),
+	cvc: z.coerce
+		.number({ invalid_type_error: 'Invalid CVC' })
+		.min(1, "Can't be blank")
+		.max(999, 'Invalid CVC'),
+})
 
 export const Form = () => {
+	//prettier-ignore
+	const {register,handleSubmit,formState: { errors }} = useForm<createCardSchema>({
+		resolver: zodResolver(createCardSchema),
+	})
+
+	function datacheck(data: any) {
+		console.log(data)
+	}
+
 	return (
-		<FormSide>
-			<Labels htmlFor="name">cardholder name</Labels>
-			<InputField type="name" id="name" placeholder="e.g. Jane Appleseed" />
-			<Labels htmlFor="cardNumber">card number</Labels>
-			<InputField
-				type="card number"
-				id="cardNumber"
-				placeholder="e.g 1234 5678 9123 000"
-			/>
+		<FormSide onSubmit={handleSubmit(datacheck)}>
+			<InputContainer>
+				<Labels htmlFor="name">cardholder name</Labels>
+				<InputField
+					id="name"
+					placeholder="e.g. Jane Appleseed"
+					errors={errors}
+					{...register('name')}
+				/>
+				{errors.name && <InputErrors>{errors.name.message}</InputErrors>}
+			</InputContainer>
+			<InputContainer>
+				<Labels htmlFor="cardn">card number</Labels>
+				<InputField
+					id="cardn"
+					placeholder="e.g 1234 5678 9123 000"
+					maxLength={16}
+					errors={errors}
+					{...register('cardn')}
+				/>
+				{errors.cardn && <InputErrors>{errors.cardn.message}</InputErrors>}
+			</InputContainer>
 			<SecurityFields>
 				<ExpireField>
 					<Labels htmlFor="month">exp. date (mm/yy)</Labels>
-					<div>
-						<InputField type="expire date month" id="month" placeholder="MM" />
-						<InputField type="expire date year" id="year" placeholder="YY" />
-					</div>
+					<DateContainer>
+						<div>
+							<InputField
+								id="month"
+								placeholder="MM"
+								maxLength={2}
+								errors={errors}
+								{...register('month')}
+							/>
+							{errors.month && <InputErrors>{errors.month.message}</InputErrors>}
+						</div>
+						<div>
+							<InputField
+								id="year"
+								placeholder="YY"
+								maxLength={2}
+								errors={errors}
+								{...register('year')}
+							/>
+							{errors.year && <InputErrors>{errors.year.message}</InputErrors>}
+						</div>
+					</DateContainer>
+					{/* {errors.month && <InputErrors>{errors.month.message}</InputErrors> || errors.year && <InputErrors>{errors.year.message}</InputErrors>} */}
 				</ExpireField>
 
 				<CvcField>
 					<Labels htmlFor="cvc">CVC</Labels>
-					<InputField type="CVC" id="cvc" placeholder="e.g. 123" />
+					<InputField
+						id="cvc"
+						placeholder="e.g. 123"
+						maxLength={3}
+						errors={errors}
+						{...register('cvc')}
+					/>
+					{errors.cvc && <InputErrors>{errors.cvc.message}</InputErrors>}
 				</CvcField>
 			</SecurityFields>
 
@@ -30,80 +119,3 @@ export const Form = () => {
 		</FormSide>
 	)
 }
-
-const FormSide = styled.form`
-    display: flex;
-	flex-direction: column;
-	text-transform: uppercase;
-	width: 410px;
-`
-
-const Labels = styled.label`
-	font-size: 1.4rem;
-	letter-spacing: 0.15rem;
-	color: #21092f;
-	margin-bottom: 5px;
-`
-
-const InputField = styled.input`
-	margin-bottom: 20px;
-	font-family: var(--font-spaceG);
-	padding: 15px;
-	border-radius: 10px;
-	border: 1px solid #dedddf;
-
-	
-	&::placeholder{
-		font-size: 2rem;
-		color: #dedddf;
-	}
-
-	&:focus{
-		outline: none;
-		padding: 15px;
-		border: double 1px transparent;
-		border-radius: 7px;
-		background-image: linear-gradient(white, white),
-		linear-gradient(to right, #6448fe, #600594);
-		background-origin: border-box;
-		background-clip: padding-box, border-box;
-
-	}
-`
-
-const SecurityFields = styled.div`
-	display: flex;
-	gap: 20px;
-	align-items: center;
-`
-
-const ExpireField = styled.div`
-	width: 50%;
-
-	div {
-		display: flex;
-		gap: 10px;
-		margin-top: 5px;
-	}
-
-	input {
-		width: 50%;
-	}
-	
-`
-
-const CvcField = styled.div`
-	display: flex;
-	flex-direction: column;
-`
-
-const ConfirmButton = styled.button`
-    background-color: #21092f;
-	color: #FFF;
-	border-radius: 10px;
-	text-transform: capitalize;
-	font-size: 2rem;
-	padding: 15px 0;
-	text-align: center;
-	margin-top: 30px;
-`

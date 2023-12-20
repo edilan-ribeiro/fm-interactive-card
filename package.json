@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "next": "^14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "styled-components": "^6.1.1"
+    "react-hook-form": "^7.49.2",
+    "styled-components": "^6.1.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",
