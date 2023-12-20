@@ -24,6 +24,7 @@ const Main = styled.main`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 130px;
 
 
     background: url('/images/bg-main-desktop.png') no-repeat;
