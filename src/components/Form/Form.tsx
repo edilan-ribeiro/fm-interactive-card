@@ -1,6 +1,5 @@
-import { useForm } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	ConfirmButton,
 	CvcField,
@@ -13,10 +12,11 @@ import {
 	Labels,
 	SecurityFields,
 } from './Form.Styles'
+import { Dispatch, SetStateAction } from 'react'
 
-type createCardSchema = z.infer<typeof createCardSchema>
+export type createCardSchema = z.infer<typeof createCardSchema>
 
-const createCardSchema = z.object({
+export const createCardSchema = z.object({
 	name: z.string().min(1, "Can't be blank").min(5, 'Name too small'),
 
 	cardn: z.coerce
@@ -26,38 +26,44 @@ const createCardSchema = z.object({
 			(cardNumber) => cardNumber.toString().length === 16,
 			'Must have 16 digits'
 		),
+
 	month: z.coerce
 		.number({ invalid_type_error: 'Invalid month' })
 		.min(1, "Can't be blank")
 		.max(12, 'Invalid month'),
+
 	year: z.coerce
 		.number({ invalid_type_error: 'Invalid year' })
 		.min(1, "Can't be blank")
 		.min(23, "Year can't be in the past")
 		.max(80, 'Invalid year'),
+
 	cvc: z.coerce
 		.number({ invalid_type_error: 'Invalid CVC' })
-		.min(1, "Can't be blank")
-		.max(999, 'Invalid CVC'),
+		.min(1, "Can't be blank"),
 })
 
-export const Form = () => {
-	//prettier-ignore
-	const {register,handleSubmit,formState: { errors }} = useForm<createCardSchema>({
-		resolver: zodResolver(createCardSchema),
-	})
+type formSent = {
+	sent: Dispatch<SetStateAction<boolean>>
+}
 
-	function datacheck(data: any) {
-		console.log(data)
+export const Form = ( { sent } : formSent ) => {
+	//prettier-ignore
+	const { register ,handleSubmit , formState: { errors } } = useFormContext<createCardSchema>()
+
+	function dataSent() {
+		sent(true)
 	}
 
+
 	return (
-		<FormSide onSubmit={handleSubmit(datacheck)}>
+		<FormSide onSubmit={handleSubmit(dataSent)}>
 			<InputContainer>
 				<Labels htmlFor="name">cardholder name</Labels>
 				<InputField
 					id="name"
 					placeholder="e.g. Jane Appleseed"
+					maxLength={20}
 					errors={errors}
 					{...register('name')}
 				/>
@@ -86,7 +92,7 @@ export const Form = () => {
 								errors={errors}
 								{...register('month')}
 							/>
-							{errors.month && <InputErrors>{errors.month.message}</InputErrors>}
+							{errors.month && <InputErrors>{errors.month.message}</InputErrors> || errors.year && <InputErrors>{errors.year.message}</InputErrors>}
 						</div>
 						<div>
 							<InputField
@@ -96,10 +102,9 @@ export const Form = () => {
 								errors={errors}
 								{...register('year')}
 							/>
-							{errors.year && <InputErrors>{errors.year.message}</InputErrors>}
 						</div>
 					</DateContainer>
-					{/* {errors.month && <InputErrors>{errors.month.message}</InputErrors> || errors.year && <InputErrors>{errors.year.message}</InputErrors>} */}
+
 				</ExpireField>
 
 				<CvcField>
