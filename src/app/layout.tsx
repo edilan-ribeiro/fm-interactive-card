@@ -20,8 +20,8 @@ export default function RootLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<html lang="en">
-			<body>
+		<html lang="en" suppressHydrationWarning={true}>
+			<body suppressHydrationWarning={true}>
 				<StyledComponentsRegistry>
 					<div className={space_grotesk.className}>{children}</div>
 				</StyledComponentsRegistry>
