@@ -4,15 +4,12 @@ import complete from '../../../public/images/icon-complete.svg'
 import { ConfirmButton } from "../Form/Form.Styles"
 import { Dispatch, SetStateAction } from "react"
 
-type reset = {
-	resetpage: Dispatch<SetStateAction<boolean>>
-}
 
-export const Thanks = ( { resetpage } : reset ) => {
+export const Thanks = (  ) => {
 
 
 	function handleClick () {
-		resetpage(false)
+		location.reload()
 	}
 
 	return (
