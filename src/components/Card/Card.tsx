@@ -1,23 +1,47 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import cardLogo from '../../../public/images/card-logo.svg'
+import { useFormContext } from 'react-hook-form'
 
 export const Card = () => {
+	const { watch } = useFormContext()
+
+	const cardData = {
+		name: watch('name') || 'Jane Appleseed',
+		number: watch('cardn') || '0000000000000000',
+		month: watch('month', '') || '00',
+		year: watch('year', '') || '00',
+		cvc: watch('cvc', '') || '000'
+	}
+
+	const formatName = (name: string) => {
+		return name.toUpperCase()
+	}
+
+	const formatNumber = (numberData: string) => {
+		let numbers = numberData
+		for (let i = 4; i <= numbers.length; i += 5) {
+			numbers = numbers.slice(0, i) + ' ' + numbers.slice(i)
+		}
+
+		return numbers
+	}
+
 	return (
 		<CardContainer>
 			<CardFront>
 				<Image src={cardLogo} width={84} height={47} alt="card logo" />
 				<CardFrontData>
-					<p>0000 0000 0000 0000</p>
+					<p>{formatNumber(cardData.number)}</p>
 					<div>
-						<p>JHON DOE</p>
-						<p>00/00</p>
+						<p>{formatName(cardData.name)}</p>
+						<p>   {`${cardData.month}/${cardData.year}`}</p>
 					</div>
 				</CardFrontData>
 			</CardFront>
 
 			<CardBack>
-				<p>000</p>
+				<p>{cardData.cvc}</p>
 			</CardBack>
 		</CardContainer>
 	)
@@ -56,7 +80,7 @@ const CardFrontData = styled.div`
 	div {
 		display: flex;
 		justify-content: space-between;
-		margin-top: 20px;
+		margin-top: 30px;
 
 		font-size: 1.4rem;
 		letter-spacing: 0.2rem;
