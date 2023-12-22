@@ -1,20 +1,17 @@
 import styled from 'styled-components'
-import { FieldErrors } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form'
 
 type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
- errors: FieldErrors;
-};
-
-
-// interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement>{
-// 	errors: {[key: string]: boolean}
-// }
+ errors: FieldErrors
+}
 
 export const FormSide = styled.form`
     display: flex;
 	flex-direction: column;
 	text-transform: uppercase;
 	width: 410px;
+	margin-right: 30px;
+	flex-shrink: 0;
 `
 
 export const Labels = styled.label`
@@ -45,7 +42,6 @@ export const InputField = styled.input<InputFieldProps>`
 	border: 1px solid ${props => props.name && props.errors[props.name] ? '#ff5252' : '#dedddf'};
 	display: flex;
 	flex-direction: column;
-
 	
 	&::placeholder{
 		font-size: 2rem;
@@ -95,6 +91,7 @@ export const ExpireField = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	height: 100%;
+	padding-top: 3px;
 
 	p {
 		margin-top: 5px;
