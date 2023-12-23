@@ -2,14 +2,16 @@
 
 import styled from 'styled-components'
 import { Card } from '@/components/Card/Card'
-import { Form, createCardSchema } from '@/components/Form/Form'
+import { Form } from '@/components/Form/Form'
 import { FormProvider, UseFormReturn, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Thanks } from '@/components/Thanks/Thanks'
 import { useState } from 'react'
+import { createCardSchema} from '@/components/Form/FormSchema/FormSchema'
+import { createCardSchemaT } from '@/Types/types'
 
 export default function Home() {
-	const methods: UseFormReturn<createCardSchema> = useForm<createCardSchema>({
+	const methods: UseFormReturn<createCardSchemaT> = useForm<createCardSchemaT>({
 		resolver: zodResolver(createCardSchema),
 	})
 

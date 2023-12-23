@@ -1,59 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { z } from 'zod'
-import {
-	ConfirmButton,
-	CvcField,
-	DateContainer,
-	ExpireField,
-	FormSide,
-	InputContainer,
-	InputErrors,
-	InputField,
-	Labels,
-	SecurityFields,
-} from './Form.Styles'
-import React, { Dispatch, SetStateAction } from 'react'
-import { MaskedInput } from './FormStyles/MaskedInput'
-
-export type createCardSchema = z.infer<typeof createCardSchema>
-
-export const createCardSchema = z.object({
-	name: z
-		.string()
-		.min(1, "Can't be blank")
-		.min(5, 'Name too small')
-		.refine((name) => name.match(/^[A-Za-z\s]*$/), 'Invalid name'),
-
-	cardn: z
-		.string({ required_error: "Can't be blank" })
-		.refine(
-			(cardNumber) => cardNumber.replace(/\s+/g, '').length === 16,
-			'Must have 16 digits'
-		),
-
-	month: z.coerce
-		.number({ invalid_type_error: 'Invalid month' })
-		.min(1, "Can't be blank")
-		.max(12, 'Invalid month'),
-
-	year: z.coerce
-		.number({ invalid_type_error: 'Invalid year' })
-		.min(1, "Can't be blank")
-		.min(23, "Minimum year is 23")
-		.max(80, 'Invalid year'),
-
-	cvc: z.coerce
-		.number({ invalid_type_error: 'Invalid CVC' })
-		.min(1, "Can't be blank"),
-})
-
-type datasent = {
-	datasent: Dispatch<SetStateAction<boolean>>
-}
+import { MaskedInput } from './FormStyles/MaskedInputStyles'
+import { createCardSchemaT, datasent } from '@/Types/types'
+import { ConfirmButton } from './FormStyles/ConfirmButtonStyles'
+import { FormSide } from './FormStyles/FormSideStyles'
+import { InputContainer, Labels, InputField, InputErrors } from './FormStyles/InputStyles'
+import { SecurityFields, ExpireField, DateContainer, CvcField } from './FormStyles/SecurityFieldsStyles'
 
 export const Form = ({ datasent }: datasent) => {
 	//prettier-ignore
-	const { register, handleSubmit, control, formState: { errors } } = useFormContext<createCardSchema>()
+	const { register, handleSubmit, control, formState: { errors } } = useFormContext<createCardSchemaT>()
 
 	function formSent() {
 		datasent(true)
@@ -94,35 +49,32 @@ export const Form = ({ datasent }: datasent) => {
 				<ExpireField>
 					<Labels htmlFor="month">exp. date (mm/yy)</Labels>
 					<DateContainer>
-					<div>
 						<div>
-							<InputField
-								id="month"
-								placeholder="MM"
-								maxLength={2}
-								$errors={errors}
-								{...register('month')}
-							/>
+							<div>
+								<InputField
+									id="month"
+									placeholder="MM"
+									maxLength={2}
+									$errors={errors}
+									{...register('month')}
+								/>
+							</div>
+							<div>
+								<InputField
+									id="year"
+									placeholder="YY"
+									maxLength={2}
+									$errors={errors}
+									{...register('year')}
+								/>
+							</div>
 						</div>
 						<div>
-							<InputField
-								id="year"
-								placeholder="YY"
-								maxLength={2}
-								$errors={errors}
-								{...register('year')}
-							/>
+							{	(errors.month && <InputErrors>{errors.month.message}</InputErrors>)
+								||
+								(errors.year && <InputErrors>{errors.year.message}</InputErrors>)
+							}
 						</div>
-						</div>
-						<div>
-						{(errors.month && (
-								<InputErrors>{errors.month.message}</InputErrors>
-							)) ||
-								(errors.year && (
-									<InputErrors>{errors.year.message}</InputErrors>
-								))}
-						</div>
-						
 					</DateContainer>
 				</ExpireField>
 

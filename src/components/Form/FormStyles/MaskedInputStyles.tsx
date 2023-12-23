@@ -1,13 +1,7 @@
-import { FieldErrors } from 'react-hook-form'
+import { InputFieldProps } from '@/Types/types'
 import { PatternFormat } from 'react-number-format'
 import styled from 'styled-components'
 
-type InputFieldProps = React.DetailedHTMLProps<
-	React.InputHTMLAttributes<HTMLInputElement>,
-	HTMLInputElement
-> & {
-	errors: FieldErrors
-}
 
 export const MaskedInput = styled(PatternFormat)<InputFieldProps>`
 	font-family: var(--font-spaceG);
