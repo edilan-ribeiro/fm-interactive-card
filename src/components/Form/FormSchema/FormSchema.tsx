@@ -26,10 +26,11 @@ export const createCardSchema = z.object({
 		.max(80, 'Invalid year'),
 
 	cvc: z.coerce
-		.number({ invalid_type_error: 'Invalid CVC' })
+		.string()
 		.min(1, "Can't be blank")
 		.refine(
-			cvc => cvc >= 100 && cvc <= 999,
-			'Must have 3 digits'
-		),
+			cvc => /^\d{3}$/.test(cvc), 
+			'Must have 3 numbers'
+		)
+		.transform(cvc => parseInt(cvc, 10)),
 })
