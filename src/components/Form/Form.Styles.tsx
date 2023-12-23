@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import { FieldErrors } from 'react-hook-form'
 
-type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
- errors: FieldErrors
+type InputFieldProps = React.DetailedHTMLProps<
+	React.InputHTMLAttributes<HTMLInputElement>,
+	HTMLInputElement
+> & {
+	$errors: FieldErrors
 }
 
 export const FormSide = styled.form`
@@ -12,6 +15,11 @@ export const FormSide = styled.form`
 	width: 410px;
 	margin-right: 30px;
 	flex-shrink: 0;
+
+	@media (max-width: 600px) {
+		width: 340px;
+		margin-right: initial;
+	}
 `
 
 export const Labels = styled.label`
@@ -19,6 +27,10 @@ export const Labels = styled.label`
 	letter-spacing: 0.15rem;
 	color: #21092f;
 	margin-bottom: 5px;
+
+	@media (max-width: 600px) {
+		font-size: 1.2rem;
+	}
 `
 
 export const InputContainer = styled.div`
@@ -26,6 +38,11 @@ export const InputContainer = styled.div`
 	flex-direction: column;
 	height: 90px;
 	margin-bottom: 20px;
+
+	@media (max-width: 600px) {
+		margin-bottom: 5px;
+		height: 85px;
+	}
 `
 
 export const InputErrors = styled.p`
@@ -33,13 +50,20 @@ export const InputErrors = styled.p`
 	color: #ff5252;
 	text-transform: none;
 	font-size: 1.2rem;
+
+	@media (max-width: 600px) {
+		margin-top: 2px;
+	}
 `
 
 export const InputField = styled.input<InputFieldProps>`
 	font-family: var(--font-spaceG);
 	padding: 15px;
 	border-radius: 10px;
-	border: 1px solid ${props => props.name && props.errors[props.name] ? '#ff5252' : '#dedddf'};
+	border: 1px solid ${(props) =>
+		props && props.$errors && props.name && props.$errors[props.name]
+			? '#ff5252'
+			: '#dedddf'};
 	display: flex;
 	flex-direction: column;
 	
@@ -59,6 +83,19 @@ export const InputField = styled.input<InputFieldProps>`
 		background-clip: padding-box, border-box;
 
 	}
+
+	@media (max-width: 600px) {
+
+		padding: 12px;
+
+		&::placeholder{
+			font-size: 1.8rem;
+		}
+
+		&:focus{
+			padding: 12px;
+		}
+	}
 `
 
 export const SecurityFields = styled.div`
@@ -67,16 +104,21 @@ export const SecurityFields = styled.div`
 	align-items: center;
 	height: 90px;
 	margin-bottom: 20px;
-`
 
+	@media (max-width: 600px) {
+		gap: 10px;
+		margin: 5px 0;
+	}
+`
 
 export const DateContainer = styled.div`
 	display: flex;
-	gap: 10px;
 	height: 100%;
+	flex-direction: column;
 
-	div{			
-		height: 70px;
+	:first-child{
+		display: flex;
+		gap: 10px;
 	}
 
 	input {
@@ -89,12 +131,9 @@ export const ExpireField = styled.div`
 	width: 50%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	height: 100%;
-	padding-top: 3px;
 
 	p {
-		margin-top: 5px;
 		color: #ff5252;
 		text-transform: none;
 	}
@@ -116,4 +155,13 @@ export const ConfirmButton = styled.button`
 	padding: 15px 0;
 	text-align: center;
 	margin-top: 10px;
+
+	&:hover {
+		background-color: #441660;
+		transition: 0.2s ease-in-out;
+	}
+
+	@media (max-width: 600px) {
+		margin: 0;
+	}
 `

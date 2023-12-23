@@ -39,7 +39,7 @@ export const createCardSchema = z.object({
 	year: z.coerce
 		.number({ invalid_type_error: 'Invalid year' })
 		.min(1, "Can't be blank")
-		.min(23, "Year can't be in the past")
+		.min(23, "Minimum year is 23")
 		.max(80, 'Invalid year'),
 
 	cvc: z.coerce
@@ -94,6 +94,7 @@ export const Form = ({ datasent }: datasent) => {
 				<ExpireField>
 					<Labels htmlFor="month">exp. date (mm/yy)</Labels>
 					<DateContainer>
+					<div>
 						<div>
 							<InputField
 								id="month"
@@ -102,12 +103,6 @@ export const Form = ({ datasent }: datasent) => {
 								$errors={errors}
 								{...register('month')}
 							/>
-							{(errors.month && (
-								<InputErrors>{errors.month.message}</InputErrors>
-							)) ||
-								(errors.year && (
-									<InputErrors>{errors.year.message}</InputErrors>
-								))}
 						</div>
 						<div>
 							<InputField
@@ -118,6 +113,16 @@ export const Form = ({ datasent }: datasent) => {
 								{...register('year')}
 							/>
 						</div>
+						</div>
+						<div>
+						{(errors.month && (
+								<InputErrors>{errors.month.message}</InputErrors>
+							)) ||
+								(errors.year && (
+									<InputErrors>{errors.year.message}</InputErrors>
+								))}
+						</div>
+						
 					</DateContainer>
 				</ExpireField>
 

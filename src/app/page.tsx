@@ -9,13 +9,7 @@ import { Thanks } from '@/components/Thanks/Thanks'
 import { useState } from 'react'
 
 export default function Home() {
-	const methods: UseFormReturn<{
-		name: string
-		cardn: number
-		month: number
-		year: number
-		cvc: number
-	}> = useForm<createCardSchema>({
+	const methods: UseFormReturn<createCardSchema> = useForm<createCardSchema>({
 		resolver: zodResolver(createCardSchema),
 	})
 
@@ -25,28 +19,30 @@ export default function Home() {
 		<Main>
 			<FormProvider {...methods}>
 				<Card />
-				{formSent === false ? (
-					<Form sent={setFormSent} />
-				) : (
-					<Thanks resetpage={setFormSent} />
-				)}
+				{formSent === false ? <Form datasent={setFormSent} /> : <Thanks />}
 			</FormProvider>
 		</Main>
 	)
 }
 
 const Main = styled.main`
-    min-width: 100vw;
+    width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
-
-
-    display: flex;
+	display: flex;
     align-items: center;
     justify-content: center;
-    gap: 130px;
-
-
-    background: url('/images/bg-main-desktop.png') no-repeat;
+    gap: 130px
+	; background: url('/images/bg-main-desktop.png') no-repeat;
     background-size: 35% 100%;
+
+	@media (max-width: 1150px) {
+		gap: 50px;
+	}
+
+	@media (max-width: 1030px) {
+		flex-direction: column;background: url('/images/bg-main-mobile.png') no-repeat cover;
+		background-size: 100% 24.8%;
+    	justify-content: flex-start;
+	}
 `

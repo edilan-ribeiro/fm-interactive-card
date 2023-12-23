@@ -44,7 +44,7 @@ const ThanksContainer = styled.div`
 		font-size: 3rem;
 		letter-spacing: 0.2rem;
 		font-weight: 500;
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 		color: #21092f;
 	}
 
@@ -53,6 +53,11 @@ const ThanksContainer = styled.div`
 		font-weight: 500;
 		color: #8e8593;
 		margin-bottom: 40px;
+	}
+
+	@media (max-width: 600px) {
+		width: 340px;
+		margin: 0;
 	}
 `
 

@@ -11,7 +11,7 @@ export const Card = () => {
 		number: watch('cardn') || '0000000000000000',
 		month: watch('month', '') || '00',
 		year: watch('year', '') || '00',
-		cvc: watch('cvc', '') || '000'
+		cvc: watch('cvc', '') || '000',
 	}
 
 	const formatName = (name: string) => {
@@ -35,7 +35,7 @@ export const Card = () => {
 					<p>{formatNumber(cardData.number)}</p>
 					<div>
 						<p>{formatName(cardData.name)}</p>
-						<p>   {`${cardData.month}/${cardData.year}`}</p>
+						<p> {`${cardData.month}/${cardData.year}`}</p>
 					</div>
 				</CardFrontData>
 			</CardFront>
@@ -49,13 +49,23 @@ export const Card = () => {
 
 const CardContainer = styled.div`
 	max-width: fit-content;
-	overflow: hidden;
 	display: grid;
 	grid-template-areas:
 	"card-front card-front ."
 	". card-back card-back"
 	;
 	gap: 30px;
+
+	@media (max-width: 1150px) {
+		transform: scale(0.9);
+	}
+
+
+	@media (max-width: 1030px) {
+		transform: initial;
+		gap: initial;
+		margin-top: 25px;
+	}
 `
 
 const CardFront = styled.div`
@@ -65,10 +75,35 @@ const CardFront = styled.div`
 	grid-area: card-front;
 	margin-right: -320px;
 	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 5px 5px 25px rgba(0,0,0,0.20);
 
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+
+	@media (max-width: 1030px) {
+		grid-area: 2 / 2 / 4 / 4;
+		
+		z-index: 5;
+		margin-right: -282px;
+		margin-top: 15px;
+	}
+
+	@media (max-width: 600px) {
+		width: 288px;
+		height: 158px;
+		background-size: cover;
+		padding: 20px;
+
+		margin-right: -180px;
+		margin-top: 10px;
+
+		img {
+			width: 56px;
+			height: 31px;
+		}
+	}
 `
 
 const CardFrontData = styled.div`
@@ -81,9 +116,20 @@ const CardFrontData = styled.div`
 		display: flex;
 		justify-content: space-between;
 		margin-top: 30px;
-
 		font-size: 1.4rem;
 		letter-spacing: 0.2rem;
+	}
+
+	@media (max-width: 600px) {
+		
+		font-size: 1.8rem;
+		letter-spacing: 0.15rem;
+
+		div {
+			font-size: 1rem;
+			letter-spacing: 0.1rem;
+			margin-top: 16px;
+		}
 	}
 	
 `
@@ -93,16 +139,35 @@ const CardBack = styled.div`
     width: 447px;
 	height: 245px;
 	background: url('/images/bg-card-back.png') no-repeat;
+	background-color: rgba(0,0,0,0.20);
 	grid-area: card-back;
 
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 	padding-right:50px;
+	border-radius: 10px;
+	box-shadow: 5px 5px 30px rgba(0,0,0,0.20);
 
 	p {
 		font-size: 1.4rem;
 		letter-spacing: 0.2rem;
 		margin-bottom: 5px;
+	}
+
+	@media (max-width: 1030px) {
+		grid-area: 1 / 3 / 3 / 5;
+	}
+
+	@media (max-width: 600px) {
+		width: 288px;
+		height: 158px;
+		background-size: cover;
+		padding-right: 40px;
+
+		p {
+			font-size: 1rem;
+			letter-spacing: 0.1rem;
+		}
 	}
 `
